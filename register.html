@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In - Submissions Hub</title>
+  <title>Register - Submissions Hub</title>
   <!-- Google Fonts: Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +21,7 @@
       --input-focus-border: #818cf8;
       --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
       --error-color: #f87171;
+      --success-color: #34d399;
     }
 
     * {
@@ -62,7 +63,7 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 60%);
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
       pointer-events: none;
       z-index: 0;
     }
@@ -166,7 +167,6 @@
       text-align: center;
       font-size: 0.95rem;
       font-weight: 500;
-      color: var(--error-color);
       min-height: 20px;
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -224,22 +224,22 @@
 <body>
   <div class="container">
     <div class="content">
-      <h1>Sign in</h1>
-      <p class="subtitle">Access the Submissions Dashboard</p>
+      <h1>Register</h1>
+      <p class="subtitle">Create a new administrator account</p>
       
-      <form id="loginForm">
+      <form id="registerForm">
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" id="username" name="username" required placeholder="Enter username">
+          <input type="text" id="username" name="username" required placeholder="Choose a username">
         </div>
         
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" required placeholder="Enter password">
+          <input type="password" id="password" name="password" required placeholder="Choose a password">
         </div>
         
         <button type="submit" id="submitBtn">
-          <span>Sign in</span>
+          <span>Create Account</span>
           <span class="spinner" id="spinner"></span>
         </button>
       </form>
@@ -247,13 +247,13 @@
       <p id="msg"></p>
 
       <div class="link-container">
-        Don't have an account? <a href="register.html">Register</a>
+        Already have an account? <a href="login.html">Sign in</a>
       </div>
     </div>
   </div>
 
   <script>
-    const form = document.getElementById('loginForm');
+    const form = document.getElementById('registerForm');
     const msgElement = document.getElementById('msg');
     const submitBtn = document.getElementById('submitBtn');
     const spinner = document.getElementById('spinner');
@@ -265,14 +265,15 @@
       e.preventDefault();
       
       submitBtn.disabled = true;
-      btnText.textContent = "Signing in...";
+      btnText.textContent = "Registering...";
       spinner.style.display = "block";
       msgElement.classList.remove('show');
       msgElement.textContent = "";
+      msgElement.style.color = ""; // reset color
 
       try {
         const params = new URLSearchParams({
-          action: "login",
+          action: "register",
           username: form.username.value,
           password: form.password.value
         });
@@ -280,19 +281,26 @@
         const data = await res.json();
 
         if (data.ok) {
-          localStorage.setItem("token", data.token);
-          window.location.href = "view.html";
+          msgElement.textContent = "Account successfully registered! Redirecting to login...";
+          msgElement.style.color = "var(--success-color)";
+          msgElement.classList.add('show');
+          form.reset();
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 2000);
         } else {
-          msgElement.textContent = data.error || "Wrong credentials";
+          msgElement.textContent = data.error || "Registration failed";
+          msgElement.style.color = "var(--error-color)";
           msgElement.classList.add('show');
         }
       } catch (error) {
-        console.error("Login error:", error);
+        console.error("Registration error:", error);
         msgElement.textContent = "Network error. Please try again later.";
+        msgElement.style.color = "var(--error-color)";
         msgElement.classList.add('show');
       } finally {
         submitBtn.disabled = false;
-        btnText.textContent = "Sign in";
+        btnText.textContent = "Create Account";
         spinner.style.display = "none";
       }
     });

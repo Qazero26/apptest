@@ -16,10 +16,12 @@
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      --primary-hover-gradient: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
       --input-bg: rgba(15, 23, 42, 0.6);
       --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
       --item-bg: rgba(15, 23, 42, 0.4);
       --item-border: rgba(255, 255, 255, 0.04);
+      --success-color: #34d399;
     }
 
     * {
@@ -34,15 +36,64 @@
       color: var(--text-primary);
       min-height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      flex-direction: column;
+      align-items: center;
       padding: 40px 20px;
       overflow-y: auto;
     }
 
+    /* Navigation Header */
+    header {
+      width: 100%;
+      max-width: 700px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      background: rgba(30, 41, 59, 0.4);
+      backdrop-filter: blur(10px);
+      padding: 16px 24px;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .logo-link svg {
+      width: 24px;
+      height: 24px;
+      stroke: #a855f7;
+      stroke-width: 2;
+    }
+
+    nav {
+      display: flex;
+      gap: 16px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--text-primary);
+    }
+
     .container {
       width: 100%;
-      max-width: 600px;
+      max-width: 700px;
       background: var(--card-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
@@ -53,14 +104,104 @@
       position: relative;
     }
 
-    h1 {
-      font-size: 2.25rem;
-      font-weight: 700;
+    .title-area {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
       background: linear-gradient(135deg, #ffffff 0%, #c084fc 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       letter-spacing: -0.025em;
+    }
+
+    /* Submissions Count Badge */
+    .count-badge {
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #818cf8;
+    }
+
+    /* Filter Controls */
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex-grow: 1;
+      position: relative;
+      min-width: 200px;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .search-box input:focus {
+      border-color: #818cf8;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    .select-box select {
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      cursor: pointer;
+      min-width: 140px;
+      transition: all 0.3s;
+    }
+
+    .select-box select:focus {
+      border-color: #818cf8;
+    }
+
+    .btn-export {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px 18px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-export:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.15);
     }
 
     ul {
@@ -166,7 +307,7 @@
     }
 
     /* Mobile adjustments */
-    @media (max-width: 480px) {
+    @media (max-width: 640px) {
       body {
         padding: 20px 10px;
       }
@@ -174,7 +315,7 @@
         padding: 30px 20px;
       }
       h1 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
       }
       .header-info {
         flex-direction: column;
@@ -184,23 +325,76 @@
         margin-left: 0;
         display: block;
       }
+      .controls {
+        flex-direction: column;
+      }
+      .btn-export {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
+  <header>
+    <a href="index.html" class="logo-link">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      <span>Hub</span>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="form.html">Contact Form</a>
+      <a href="view.html" class="active">Submissions</a>
+    </nav>
+  </header>
+
   <div class="container">
-    <h1>All submissions</h1>
+    <div class="title-area">
+      <h1>All submissions</h1>
+      <span class="count-badge" id="countBadge">0 Submissions</span>
+    </div>
+
+    <!-- Filtering & Export Controls -->
+    <div class="controls">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search by name, email or keyword...">
+      </div>
+      <div class="select-box">
+        <select id="sortSelect">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="alpha">Alphabetical</option>
+        </select>
+      </div>
+      <button class="btn-export" id="btnExport">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+        </svg>
+        <span>Export JSON</span>
+      </button>
+    </div>
+
     <div id="status" class="loader">
       <div class="spinner"></div>
       <p>Loading submissions...</p>
     </div>
+    
     <ul id="list" style="display: none;"></ul>
   </div>
 
   <script>
     const listElement = document.getElementById('list');
     const statusElement = document.getElementById('status');
+    const countBadge = document.getElementById('countBadge');
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+    const btnExport = document.getElementById('btnExport');
+
     const URL = "https://script.google.com/macros/s/AKfycbwtS3A0wSZ6DSfwVwXnCvg3quKIDAzuW9RJcOlsyElKxv4m3Gv7bGBOuUd-BwQg8IOe/exec";
+    
+    let allContacts = [];
 
     function formatDate(dateString) {
       if (!dateString) return '';
@@ -225,32 +419,8 @@
         const data = await res.json();
 
         if (data && data.ok && Array.isArray(data.contacts)) {
-          const contacts = data.contacts;
-          statusElement.style.display = "none";
-          
-          if (contacts.length === 0) {
-            statusElement.innerHTML = `<p class="status-msg">No submissions yet</p>`;
-            statusElement.style.display = "block";
-            return;
-          }
-
-          listElement.innerHTML = "";
-          contacts.forEach(contact => {
-            const li = document.createElement('li');
-            
-            li.innerHTML = `
-              <div class="header-info">
-                <div class="user-info">
-                  <span class="name">${escapeHTML(contact.name)}</span>
-                  <span class="email">(${escapeHTML(contact.email)})</span>
-                </div>
-                <span class="date">${escapeHTML(formatDate(contact.created_at || contact.date))}</span>
-              </div>
-              <p class="message">${escapeHTML(contact.message)}</p>
-            `;
-            listElement.appendChild(li);
-          });
-          listElement.style.display = "flex";
+          allContacts = data.contacts;
+          renderList();
         } else {
           showError();
         }
@@ -260,9 +430,64 @@
       }
     }
 
+    function renderList() {
+      let filtered = [...allContacts];
+
+      // 1. Filter
+      const query = searchInput.value.toLowerCase().trim();
+      if (query) {
+        filtered = filtered.filter(c => 
+          (c.name && c.name.toLowerCase().includes(query)) ||
+          (c.email && c.email.toLowerCase().includes(query)) ||
+          (c.message && c.message.toLowerCase().includes(query))
+        );
+      }
+
+      // 2. Sort
+      const sortBy = sortSelect.value;
+      if (sortBy === 'newest') {
+        filtered.sort((a, b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date));
+      } else if (sortBy === 'oldest') {
+        filtered.sort((a, b) => new Date(a.created_at || a.date) - new Date(b.created_at || b.date));
+      } else if (sortBy === 'alpha') {
+        filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+      }
+
+      // 3. Update Count Badge
+      countBadge.textContent = `${filtered.length} Submissions`;
+
+      // 4. Render
+      statusElement.style.display = "none";
+      if (filtered.length === 0) {
+        listElement.style.display = "none";
+        statusElement.innerHTML = `<p class="status-msg">No submissions found</p>`;
+        statusElement.style.display = "block";
+        return;
+      }
+
+      listElement.innerHTML = "";
+      filtered.forEach(contact => {
+        const li = document.createElement('li');
+        
+        li.innerHTML = `
+          <div class="header-info">
+            <div class="user-info">
+              <span class="name">${escapeHTML(contact.name)}</span>
+              <span class="email">(${escapeHTML(contact.email)})</span>
+            </div>
+            <span class="date">${escapeHTML(formatDate(contact.created_at || contact.date))}</span>
+          </div>
+          <p class="message">${escapeHTML(contact.message)}</p>
+        `;
+        listElement.appendChild(li);
+      });
+      listElement.style.display = "flex";
+    }
+
     function showError() {
       statusElement.innerHTML = `<p class="status-msg">Couldn't load — try again later</p>`;
       statusElement.style.display = "block";
+      listElement.style.display = "none";
     }
 
     function escapeHTML(str) {
@@ -274,6 +499,23 @@
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
     }
+
+    // Export Functionality
+    btnExport.addEventListener('click', () => {
+      if (allContacts.length === 0) return;
+      
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(allContacts, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href",     dataStr);
+      downloadAnchor.setAttribute("download", "submissions_export.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    });
+
+    // Event listeners for sorting & filtering
+    searchInput.addEventListener('input', renderList);
+    sortSelect.addEventListener('change', renderList);
 
     // Load on start
     loadSubmissions();

@@ -35,10 +35,59 @@
       color: var(--text-primary);
       min-height: 100vh;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 40px 20px;
       overflow-x: hidden;
+    }
+
+    /* Navigation Header */
+    header {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      background: rgba(30, 41, 59, 0.4);
+      backdrop-filter: blur(10px);
+      padding: 16px 24px;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .logo-link svg {
+      width: 24px;
+      height: 24px;
+      stroke: #a855f7;
+      stroke-width: 2;
+    }
+
+    nav {
+      display: flex;
+      gap: 16px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--text-primary);
     }
 
     .container {
@@ -128,6 +177,14 @@
       min-height: 120px;
     }
 
+    /* Character counter styling */
+    .char-counter {
+      text-align: right;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+
     button {
       width: 100%;
       background: var(--primary-gradient);
@@ -207,6 +264,9 @@
 
     /* Mobile adjustments */
     @media (max-width: 480px) {
+      body {
+        padding: 20px 10px;
+      }
       .container {
         padding: 30px 20px;
       }
@@ -217,6 +277,20 @@
   </style>
 </head>
 <body>
+  <header>
+    <a href="index.html" class="logo-link">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      <span>Hub</span>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="form.html" class="active">Contact Form</a>
+      <a href="view.html">Submissions</a>
+    </nav>
+  </header>
+
   <div class="container">
     <div class="form-content">
       <h1>Contact us</h1>
@@ -235,7 +309,8 @@
         
         <div class="form-group">
           <label for="message">Message</label>
-          <textarea id="message" name="message" required placeholder="Your message here..."></textarea>
+          <textarea id="message" name="message" required placeholder="Your message here..." maxlength="1000"></textarea>
+          <div class="char-counter" id="charCounter">0 / 1000 characters</div>
         </div>
         
         <button type="submit" id="submitBtn">
@@ -254,8 +329,16 @@
     const submitBtn = document.getElementById('submitBtn');
     const spinner = document.getElementById('spinner');
     const btnText = submitBtn.querySelector('span');
+    const messageInput = document.getElementById('message');
+    const charCounter = document.getElementById('charCounter');
 
     const URL = "https://script.google.com/macros/s/AKfycbwtS3A0wSZ6DSfwVwXnCvg3quKIDAzuW9RJcOlsyElKxv4m3Gv7bGBOuUd-BwQg8IOe/exec";
+
+    // Character counter logic
+    messageInput.addEventListener('input', () => {
+      const length = messageInput.value.length;
+      charCounter.textContent = `${length} / 1000 characters`;
+    });
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -285,8 +368,9 @@
         msgElement.textContent = "Thanks! We'll get back to you.";
         msgElement.classList.add('show');
         
-        // Reset the form
+        // Reset the form & counter
         form.reset();
+        charCounter.textContent = "0 / 1000 characters";
       } catch (error) {
         console.error("Submission error:", error);
         msgElement.textContent = "Something went wrong. Please try again.";
